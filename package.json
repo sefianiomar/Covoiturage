@@ -26,7 +26,8 @@
     "angular-in-memory-web-api": "^0.7.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.4",
+    "mathjs":"^5.3.1"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.38",
