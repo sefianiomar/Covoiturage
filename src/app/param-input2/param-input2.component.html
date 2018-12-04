@@ -1,0 +1,21 @@
+<div>
+
+  <span> Ville {{ville.id}}</span>
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon1">Nom la ville</span>
+    <input [(ngModel)]="ville.name" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon2">Distance entre ville {{ville.id}} et la ville d'arrivé</span>
+    <input [(ngModel)]="ville.distance" type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon2">
+    <span class="input-group-addon">Km</span>
+  </div>
+  <br>
+  <div class="input-group mb-3">
+    <span class="input-group-addon" id="basic-addon3"> Nombre de voyageurs de cette ville</span>
+    <input [(ngModel)]="ville.nb_traveller"  type="number" class="form-control" aria-describedby="basic-addon3">
+  </div>
+  <br>
+  <br>
+</div>

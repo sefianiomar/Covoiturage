@@ -1,0 +1,42 @@
+<div class="container">
+<div>
+ <br>
+  <div class="input-group">
+    <span class="input-group-addon" id="basic-addon4">Nombre de voyageurs</span>
+    <input [disabled]="input1" [(ngModel)]="nb_voyageurs" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+  </div>
+  <br>
+  <div class="input-group mb-3">
+    <span class="input-group-addon" id="basic-addon44">  Cout du voyage au Km </span>
+    <input [disabled]="input2" [(ngModel)]="cost_km"  type="number" class="form-control" aria-describedby="basic-addon44">
+    <span class="input-group-addon">Euro</span>
+  </div>
+  <br>
+<button (click)="next()" type="button" class="btn btn-primary">Next</button>
+</div>
+  <br>
+  <br>
+<div *ngIf="visible">
+  <ul>
+    <li *ngFor="let v of voyageurs let index = index;">
+      <div>
+
+        <span> Voyageur {{index+1}}</span>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon6">Distance à faire vers la ville d'arrivé</span>
+          <input [disabled]="input3" [(ngModel)]="voyageurs[index].distance" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon6">
+          <span class="input-group-addon">Km</span>
+        </div>
+        <br>
+      </div>
+    </li>
+  </ul>
+  <button (click)="next2()" type="button" class="btn btn-primary">Next</button>
+</div>
+  <div *ngFor="let item of result">
+    <label>{{item}}</label>
+  </div>
+  <br>
+  <button (click)="reinit()" type="button" class="btn btn-primary">Réinitialiser</button>
+</div>
