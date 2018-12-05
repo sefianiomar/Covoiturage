@@ -38,7 +38,7 @@
    <h3 class="text-center">Résultats</h3>
    <table class="table table-hover"> 
     <thead> 
-      <tr bgcolor="#f0efed"> 
+      <tr bgcolor="#f0efed" style="text-align: center;"> 
           <th>Voyageur</th>
           <th>Stand-alone cost</th>
           <th>Cout Séparation</th>
@@ -57,20 +57,58 @@
           <td style="text-align: center;">
           <div *ngIf="item.standalone_separation else elseblock">
           Satisfait  
+          <i class="fa fa-info-circle" title="L'allocation satisfait le Stand Alone Test"></i>
           </div>
-          <ng-template #elseblock>Non Satisfait</ng-template>
-          <i class="fa fa-info-circle" title="Do you like my fa-coq icon?"></i>
+          <ng-template #elseblock>Non Satisfait
+          <i class="fa fa-info-circle" title="L'allocation ne satisfait pas le Stand Alone Test"></i>
+          </ng-template>
+          
           </td>
-          <td style="text-align: center;"></td>
+          <td style="text-align: center;">Toujours Satisfait
+          <i class="fa fa-info-circle" title="L'allocation appartient au noyau car aucun Voyageur n’a intérêt à quitter le groupe, efficace contre les coalitions."></i>
+          </td>
           <td style="text-align: center;">{{item.prop_coast}}</td>
           <td style="text-align: center;">
           <div *ngIf="item.standalone_porpotionnel else elseblock">
           Satisfait  
+          <i class="fa fa-info-circle" title="L'allocation satisfait le Stand Alone Test"></i>
           </div>
-          <ng-template #elseblock>Non Satisfait</ng-template>
-          <i class="fa fa-info-circle" title="Do you like my fa-coq icon?"></i>
+          <ng-template #elseblock>Non Satisfait
+          <i class="fa fa-info-circle" title="L'allocation ne satisfait pas le Stand Alone Test"></i>
+          </ng-template>
+          
           </td>
-          <td style="text-align: center;"></td>
+          <td style="text-align: center;">
+          <div *ngIf="item.comment_test_noyau === '' else elseblock">
+          Satisfait  
+          <i class="fa fa-info-circle" title="L'allocation appartient au noyau car aucun Voyageur n’a intérêt à quitter le groupe, efficace contre les coalitions."></i>
+          </div>
+          <ng-template #elseblock>Non Satisfait
+                <button type="button" class="btn" style="background-color: white;" data-toggle="modal" data-target="#myModal"><i class="fa fa-info-circle"></i></button>
+
+                <!-- Modal -->
+                <div id="myModal" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Noyau Test non satisfait</h4>
+                      </div>
+                      <div class="modal-body">
+                        {{item.comment_test_noyau}}
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+          </ng-template>
+
+          </td>
       </tr>
       </tbody>
     </table>

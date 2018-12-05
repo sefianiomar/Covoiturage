@@ -34,7 +34,6 @@ export class ParamInput1Component implements OnInit {
    input2 = false ;
    input3 = false ;
 
-
    constructor() {
 
    }
@@ -66,6 +65,7 @@ export class ParamInput1Component implements OnInit {
         this.vo.sa_cost = 0 ;
         this.vo.prop_coast = 0 ;
         this.vo.distance = 0 ;
+        this.vo.comment_test_noyau="";
       //  this.v.traveller = new Voyageur()[this.v.nb_traveller];
         this.voyageurs[i] = this.vo ;
      //   console.log('-- ', this.v);
@@ -104,6 +104,8 @@ export class ParamInput1Component implements OnInit {
       this.standalone_test_separation();
       this.cout_proportionnel();
       this.standalone_test_proportionnel();
+      this.noyau_proportionnel_pair();
+      this.noyau_proportionnel_triplet();
       this.showresult = true;
     }
   }
@@ -179,7 +181,7 @@ export class ParamInput1Component implements OnInit {
     console.log('-- nb travellers a continuer le chemin ', nb);
     return nb ;
   }
-
+  //calculer le cout a payer pour chaque voyageur par séparation
   cout_separation(): void {
     console.log('-- cout separation ---');
     for (let i = 0; i < this.voyageurs.length; i++) {
@@ -193,23 +195,69 @@ export class ParamInput1Component implements OnInit {
       }
     }
   }
+
+  //stand lone test - séparation
   standalone_test_separation() : void {
      for (let i = 0; i < this.voyageurs.length; i++) {
       this.voyageurs[i].standalone_separation = this.voyageurs[i].sa_cost>this.voyageurs[i].sep_cost;    
     }
   }
+  //calculer le cout a payer pour chaque voyageur par proportion
   cout_proportionnel(): void {
     console.log('-- cout proportionnel ---');
     for (let i = 0; i < this.voyageurs.length; i++) {
       this.voyageurs[i].prop_coast =  Math.round(100 *(this.voyageurs[i].distance*this.cout_total)/this.total_dist)/100;    
     }
   }
-
+  //stand alone test proportionnel
   standalone_test_proportionnel() : void {
-     for (let i = 0; i < this.voyageurs.length; i++) {
+    for (let i = 0; i < this.voyageurs.length; i++) {
       this.voyageurs[i].standalone_porpotionnel = this.voyageurs[i].sa_cost>this.voyageurs[i].prop_coast;    
     }
   }
+
+  //test noyau pair- proportionnel
+  noyau_proportionnel_pair() : void {
+     for (let i = 0; i < this.voyageurs.length; i++) {
+      for (let j = 0; j < this.voyageurs.length; j++) {
+         if(i!=j){
+           let pair = this.voyageurs[i].id +" " +this.voyageurs[j].id;
+           let cout = Math.max(this.voyageurs[i].sa_cost,this.voyageurs[j].sa_cost);
+           let cout_prop = this.voyageurs[i].prop_coast+this.voyageurs[j].prop_coast;
+           console.log(cout);
+           console.log(cout_prop);
+           console.log(cout_prop<cout);
+           if(cout_prop>cout){
+             if(this.voyageurs[i].comment_test_noyau==""){
+             this.voyageurs[i].comment_test_noyau  = this.voyageurs[i].comment_test_noyau + "Par example, La somme de couts proportionnels pour les voyageurs ("+pair+") est :"+cout_prop+
+             ", alors qu'ils peuvent s'en tirer seuls pour seulement :"+cout+", donc ce groupe à l'intérêt à quitter le noyau";
+             }
+           }
+         }
+      }
+    }
+  }
+  //test noyau triplet- proportionnel
+  noyau_proportionnel_triplet() : void {
+     for (let i = 0; i < this.voyageurs.length; i++) {
+      for (let j = 0; j < this.voyageurs.length; j++) {
+        for (let k = 0; k < this.voyageurs.length; k++) {
+         if(i!=j && i!=k && j!=k){
+           let triplet = this.voyageurs[i].id +" " +this.voyageurs[j].id+" "+this.voyageurs[k].id;
+           let cout = Math.max(this.voyageurs[i].sa_cost,this.voyageurs[j].sa_cost,this.voyageurs[k].sa_cost);
+           let cout_prop = this.voyageurs[i].prop_coast+this.voyageurs[j].prop_coast+this.voyageurs[k].prop_coast;
+           if(cout_prop>cout){
+              if(this.voyageurs[i].comment_test_noyau==""){
+               this.voyageurs[i].comment_test_noyau  =this.voyageurs[i].comment_test_noyau + "Par example, La somme de couts proportionnels pour les voyageurs ("+triplet+") est :"+cout_prop+", alors qu'ils peuvent s'en tirer seuls pour seulement :"+cout+", donc ce groupe à l'intérêt à quitter le noyau";
+              }
+           }
+         }
+      }
+    }
+   }
+
+  }
+
   //initialize
   reinit() {
     window.location.reload();

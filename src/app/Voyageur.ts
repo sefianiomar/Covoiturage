@@ -8,4 +8,5 @@ export class Voyageur {
   id_ville : number ;
   standalone_separation :boolean;
   standalone_porpotionnel : boolean;
+  comment_test_noyau :string;
 }
