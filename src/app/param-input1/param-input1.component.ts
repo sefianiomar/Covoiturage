@@ -14,6 +14,7 @@ import * as math from 'mathjs';
 export class ParamInput1Component implements OnInit {
 
    visible = false ;
+   showresult =false;
    depart = '';
    distance = 0 ;
    nb_ville = 0 ;
@@ -21,6 +22,7 @@ export class ParamInput1Component implements OnInit {
    cost_km = 0 ;
    villes: Ville[] = [] ;
    voyageurs: Voyageur[] = [];
+   total_dist = 0;
    v: Ville;
    vo: Voyageur;
    str = '' ;
@@ -31,6 +33,8 @@ export class ParamInput1Component implements OnInit {
    input1 = false ;
    input2 = false ;
    input3 = false ;
+
+
    constructor() {
 
    }
@@ -93,10 +97,14 @@ export class ParamInput1Component implements OnInit {
         console.log('-- ', this.voyageurs[i].id, '--', this.voyageurs[i].distance, '--');
        // this.nb_voyageurs = this.nb_voyageurs + this.villes[i].nb_traveller ;
       }
+
       this.initCoutTraveller();
       this.extractVille();
       this.cout_separation();
+      this.standalone_test_separation();
       this.cout_proportionnel();
+      this.standalone_test_proportionnel();
+      this.showresult = true;
     }
   }
 
@@ -128,6 +136,7 @@ export class ParamInput1Component implements OnInit {
         this.v.distance = voy.distance ;
         this.v.cost = voy.sa_cost ;
         this.v.nb_traveller = 1;
+        this.total_dist +=voy.distance;
         this.villes.push(this.v);
         j++ ;
       }else {
@@ -150,6 +159,7 @@ export class ParamInput1Component implements OnInit {
         this.villes[i].cost_diff = this.villes[i].cost ;
       }
     }
+    console.log(this.villes);
   }
   // initialiser les couts standalone des voyageurs par les couts de leurs villes de depart
   // et les couts par separations par zero
@@ -169,10 +179,10 @@ export class ParamInput1Component implements OnInit {
     console.log('-- nb travellers a continuer le chemin ', nb);
     return nb ;
   }
+
   cout_separation(): void {
     console.log('-- cout separation ---');
     for (let i = 0; i < this.voyageurs.length; i++) {
-
       for (let j = 0; j < this.villes.length; j++) {
         if (this.voyageurs[i].distance >= this.villes[j].distance) {
           this.voyageurs[i].sep_cost = this.voyageurs[i].sep_cost +
@@ -182,52 +192,25 @@ export class ParamInput1Component implements OnInit {
         }
       }
     }
-    let i = 0 ;
-    for (const tr of this.voyageurs) {
-      this.result[i] = 'je suis le voyageurs ' + tr.id + ' pour partir à la ville ' +
-        tr.id_ville + '-- je paye seul ' + tr.sa_cost + '--mais avec separation ' + tr.sep_cost + ' euro';
-      i++ ;
+  }
+  standalone_test_separation() : void {
+     for (let i = 0; i < this.voyageurs.length; i++) {
+      this.voyageurs[i].standalone_separation = this.voyageurs[i].sa_cost>this.voyageurs[i].sep_cost;    
     }
   }
-
   cout_proportionnel(): void {
-     let b = [] ;
     console.log('-- cout proportionnel ---');
     for (let i = 0; i < this.voyageurs.length; i++) {
-      for (let j = 0; j < this.voyageurs.length; j++) {
-        if ( i === 0 ) {
-          this.result2[i][j] = 1;
-        } else {
-        if ( j === 0 ) {
-          this.result2[i][0] = 1 / this.voyageurs[0].sa_cost ;
-        }else if (i === j) {
-          this.result2[i][i] = 0 - (1 / this.voyageurs[i].sa_cost);
-        }else {
-          this.result2[i][j] = 0;
-        }
-      }
-      console.log('thiiiis is the matrix value at i =', i , ' and j= ', j , ' v = ', this.result2[i][j]);
-      }
-      if ( i === 0 ) {
-        b[i] = this.cout_total ;
-      }else {
-        b[i] = 0 ;
-      }
+      this.voyageurs[i].prop_coast =  Math.round(100 *(this.voyageurs[i].distance*this.cout_total)/this.total_dist)/100;    
     }
-    //let i = 0 ;
-    /*for (const tr of this.voyageurs) {
-      this.result2[i] = 'je suis le voyageurs ' + tr.id + ' pour partir à la ville ' +
-        tr.id_ville + '-- je paye seul ' + tr.sa_cost + '--mais avec separation ' + tr.sep_cost + ' euro';
-      i++ ;
-    }*/
-    console.log(this.result2);
-    console.log(b);
-    let matrix = math.matrix(this.result2)
-    console.log(matrix);
-    let rs = math.lusolve(matrix, b);
-    console.log(rs._data);
-
   }
+
+  standalone_test_proportionnel() : void {
+     for (let i = 0; i < this.voyageurs.length; i++) {
+      this.voyageurs[i].standalone_porpotionnel = this.voyageurs[i].sa_cost>this.voyageurs[i].prop_coast;    
+    }
+  }
+  //initialize
   reinit() {
     window.location.reload();
   }

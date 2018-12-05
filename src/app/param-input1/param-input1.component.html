@@ -34,9 +34,47 @@
   </ul>
   <button (click)="next2()" type="button" class="btn btn-primary">Next</button>
 </div>
-  <div *ngFor="let item of result">
-    <label>{{item}}</label>
-  </div>
+<div *ngIf="showresult">
+   <h3 class="text-center">Résultats</h3>
+   <table class="table table-hover"> 
+    <thead> 
+      <tr bgcolor="#f0efed"> 
+          <th>Voyageur</th>
+          <th>Stand-alone cost</th>
+          <th>Cout Séparation</th>
+          <th>Stand alone Test</th>
+          <th>Noyau</th>
+          <th>Cout Proportionels</th>
+          <th>Stand alone Test</th>
+          <th>Noyau</th>        
+      </tr> 
+    </thead> 
+    <tbody> 
+      <tr *ngFor="let item of voyageurs">
+        <th scope="row">Voyageur {{item.id}}</th>
+          <td style="text-align: center;">{{item.sa_cost}}</td>
+          <td style="text-align: center;">{{item.sep_cost}}</td>
+          <td style="text-align: center;">
+          <div *ngIf="item.standalone_separation else elseblock">
+          Satisfait  
+          </div>
+          <ng-template #elseblock>Non Satisfait</ng-template>
+          <i class="fa fa-info-circle" title="Do you like my fa-coq icon?"></i>
+          </td>
+          <td style="text-align: center;"></td>
+          <td style="text-align: center;">{{item.prop_coast}}</td>
+          <td style="text-align: center;">
+          <div *ngIf="item.standalone_porpotionnel else elseblock">
+          Satisfait  
+          </div>
+          <ng-template #elseblock>Non Satisfait</ng-template>
+          <i class="fa fa-info-circle" title="Do you like my fa-coq icon?"></i>
+          </td>
+          <td style="text-align: center;"></td>
+      </tr>
+      </tbody>
+    </table>
+</div>
   <br>
   <button (click)="reinit()" type="button" class="btn btn-primary">Réinitialiser</button>
 </div>
