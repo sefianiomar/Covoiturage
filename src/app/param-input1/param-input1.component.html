@@ -79,7 +79,7 @@
           
           </td>
           <td style="text-align: center;">
-          <div *ngIf="item.comment_test_noyau === '' else elseblock">
+          <div *ngIf="item.comment_test_noyau_pair === '' && item.comment_test_noyau_triplet ==='' && item.comment_test_noyau_quad ==='' else elseblock">
           Satisfait  
           <i class="fa fa-info-circle" title="L'allocation appartient au noyau car aucun Voyageur n’a intérêt à quitter le groupe, efficace contre les coalitions."></i>
           </div>
@@ -97,13 +97,16 @@
                         <h4 class="modal-title">Noyau Test non satisfait</h4>
                       </div>
                       <div class="modal-body">
-                        {{item.comment_test_noyau}}
+                        <p>
+                        {{item.comment_test_noyau_pair}}<br/>
+                        {{item.comment_test_noyau_triplet}}<br/>
+                        {{item.comment_test_noyau_quad}}<br/>
+                        </p>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                       </div>
                     </div>
-
                   </div>
                 </div>
           </ng-template>
