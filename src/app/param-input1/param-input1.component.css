@@ -1,0 +1,16 @@
+p , span , div {
+  color : white ;
+}
+span.input-group-addon{
+  color : black;
+}
+span.alert{
+  color :  gold ;
+  font-weight: bold;
+}
+thead{
+  color: #000;
+}
+#myModal, #myModal *{
+color: black;
+}

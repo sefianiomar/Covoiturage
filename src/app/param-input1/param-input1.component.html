@@ -1,23 +1,35 @@
 <div class="container">
 <div>
  <br>
+  <form [formGroup]="registerForm">
   <div class="input-group">
     <span class="input-group-addon" id="basic-addon4">Nombre de voyageurs</span>
-    <input [disabled]="input1" [(ngModel)]="nb_voyageurs" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
+    <input formControlName='nbv' [(ngModel)]="nb_voyageurs" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
   </div>
+    <span class="alert"  *ngIf="f.nbv.invalid">Le nombre de voyageurs doit etre entre 2 et 5</span>
+    <span class="alert" *ngIf="f.nbv.required">Ce champs est obligatoire </span>
   <br>
-  <div class="input-group mb-3">
+    <br>
+
+    <div class="input-group mb-3">
     <span class="input-group-addon" id="basic-addon44">  Cout du voyage au Km </span>
-    <input [disabled]="input2" [(ngModel)]="cost_km"  type="number" class="form-control" aria-describedby="basic-addon44">
+    <input formControlName='ckm' [(ngModel)]="cost_km"  type="number" class="form-control" aria-describedby="basic-addon44">
     <span class="input-group-addon">Euro</span>
   </div>
-  <br>
-<button (click)="next()" type="button" class="btn btn-primary">Next</button>
+    <span class="alert" *ngIf="f.ckm.invalid"> Le cout au kilomètre doit etre supérieure à 0 euro </span>
+    <span class="alert" *ngIf="f.ckm.required"> Ce champs est obligatoire </span>
+  <br>    <br>
+
+
+    <button (click)="next()" type="button" class="btn btn-primary">Suivant</button>
+  </form>
 </div>
   <br>
   <br>
 <div *ngIf="visible">
+
   <ul>
+    <span class="alert" *ngIf="error_dist" [id]="index">La distance doit etre supérieure ou égale à 1 km</span>
     <li *ngFor="let v of voyageurs let index = index;">
       <div>
 
@@ -32,21 +44,21 @@
       </div>
     </li>
   </ul>
-  <button (click)="next2()" type="button" class="btn btn-primary">Next</button>
+  <button (click)="next2()" type="button" class="btn btn-primary">Suivant</button>
 </div>
 <div *ngIf="showresult">
    <h3 class="text-center">Résultats</h3>
-   <table class="table table-hover"> 
+   <table class="table">
     <thead> 
       <tr bgcolor="#f0efed" style="text-align: center;"> 
           <th>Voyageur</th>
-          <th>Stand-alone cost</th>
+          <th>Cout Standalone</th>
           <th>Cout Séparation</th>
-          <th>Stand alone Test</th>
-          <th>Noyau</th>
-          <th>Cout Proportionels</th>
-          <th>Stand alone Test</th>
-          <th>Noyau</th>        
+          <th>Test Standalone</th>
+          <th>Test Noyau</th>
+          <th>Cout Proportionel</th>
+          <th>Test Stand alone</th>
+          <th>Test Noyau</th>
       </tr> 
     </thead> 
     <tbody> 
@@ -57,10 +69,10 @@
           <td style="text-align: center;">
           <div *ngIf="item.standalone_separation else elseblock">
           Satisfait  
-          <i class="fa fa-info-circle" title="L'allocation satisfait le Stand Alone Test"></i>
+          <i class="fa fa-info-circle" title="L'allocation satisfait le Standalone Test"></i>
           </div>
           <ng-template #elseblock>Non Satisfait
-          <i class="fa fa-info-circle" title="L'allocation ne satisfait pas le Stand Alone Test"></i>
+          <i class="fa fa-info-circle" title="L'allocation ne satisfait pas le Standalone Test"></i>
           </ng-template>
           
           </td>
@@ -84,7 +96,7 @@
           <i class="fa fa-info-circle" title="L'allocation appartient au noyau car aucun Voyageur n’a intérêt à quitter le groupe, efficace contre les coalitions."></i>
           </div>
           <ng-template #elseblock>Non Satisfait
-                <button type="button" class="btn" style="background-color: white;" data-toggle="modal" data-target="#myModal"><i class="fa fa-info-circle"></i></button>
+                <button type="button" class="btn" style="background-color: transparent;" data-toggle="modal" data-target="#myModal"><i class="fa fa-info-circle"></i></button>
 
                 <!-- Modal -->
                 <div id="myModal" class="modal fade" role="dialog">

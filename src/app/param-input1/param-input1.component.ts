@@ -4,6 +4,7 @@ import {Voyageur} from '../Voyageur';
 import {isNull} from 'util';
 import {isEmpty} from 'rxjs/operator/isEmpty';
 import * as math from 'mathjs';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-param-input1',
@@ -12,9 +13,10 @@ import * as math from 'mathjs';
 })
 
 export class ParamInput1Component implements OnInit {
-
-   visible = false ;
-   showresult =false;
+  error_dist: boolean = false  ;
+  registerForm: FormGroup;
+  visible = false ;
+   showresult = false;
    depart = '';
    distance = 0 ;
    nb_ville = 0 ;
@@ -34,7 +36,7 @@ export class ParamInput1Component implements OnInit {
    input2 = false ;
    input3 = false ;
 
-   constructor() {
+   constructor(private formBuilder: FormBuilder) {
 
    }
 
@@ -42,15 +44,29 @@ export class ParamInput1Component implements OnInit {
     this.input1 = false ;
     this.input2 = false ;
     this.input3 = false ;
+
+    this.registerForm = this.formBuilder.group({
+      nbv: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('([2-5])')
+      ])),
+      ckm: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^\\s*(?=.*[1-9])\\d*(?:\\.\\d{1,2})?\\s*$')
+      ]))
+    });
   }
+  get f() { return this.registerForm.controls; }
 
   next(): void {
 
-    if ( this.nb_voyageurs === 0 || this.cost_km === 0 ||
-      !this.cost_km || !this.nb_voyageurs) {
+    if (this.registerForm.invalid) {
       console.log('-- ERROR ---');
-
     }else {
+      this.registerForm.get('nbv').disable();
+      this.registerForm.get('ckm').disable();
+
+
       this.input1 = true ;
       this.input2 = true ;
       this.visible = true ;
@@ -74,27 +90,28 @@ export class ParamInput1Component implements OnInit {
      //   console.log('-- ', this.v);
 
       }
+
      // console.log('-- ', this.depart, '--', this.distance);
     }
 
   }
 
-  checkemptyfield(): boolean {
-    let booli = true ;
+  checkemptyfield(): number {
+    let booli = -1 ;
 
-    for (const va of this.voyageurs) {
-      if (va.distance === 0) {booli = false ; }
+    for (let i = 0; i < this.voyageurs.length; i++) {
+      if (this.voyageurs[i].distance <= 0) {booli = i ; }
     }
-
-    if (booli) {return true ; }
-    else {return false ; }
+    return booli ;
   }
 
   next2(): void {
-    if (!this.checkemptyfield()) {
+     let index = this.checkemptyfield();
+    if (index !== -1) {
       console.log('-- ERROR ---');
-
+      this.error_dist = true ;
     }else {
+      this.error_dist = false ;
       this.input3 = true ;
       for (let i = 0; i < this.voyageurs.length; i++) {
         console.log('-- ', this.voyageurs[i].id, '--', this.voyageurs[i].distance, '--');
@@ -197,7 +214,7 @@ export class ParamInput1Component implements OnInit {
             'il reste avec moi ', this.getNbVoyageur(j));
         }
       }
-    }
+  }
   }
 
   //stand lone test - séparation
@@ -231,7 +248,7 @@ export class ParamInput1Component implements OnInit {
            if(cout_prop>cout){
              if(this.voyageurs[i].comment_test_noyau_pair==="")
              this.voyageurs[i].comment_test_noyau_pair  = this.voyageurs[i].comment_test_noyau_pair + "Pair test : La somme de couts proportionnels pour les voyageurs ("+pair+") est :"+cout_prop+
-             ", alors qu'ils peuvent s'en tirer seuls pour seulement :"+cout+", donc ce groupe à l'intérêt à quitter le noyau";
+             ", alors qu'ils peuvent s'en tirer seuls pour seulement :"+cout+", donc ce sous groupe à l'intérêt à quitter le groupe";
            }       
         }
      }
@@ -250,7 +267,7 @@ export class ParamInput1Component implements OnInit {
            if(cout_prop>cout){
                if(this.voyageurs[i].comment_test_noyau_triplet==="")
                this.voyageurs[i].comment_test_noyau_triplet  =this.voyageurs[i].comment_test_noyau_triplet + "Triplet Test : La somme de couts proportionnels pour les voyageurs ("+triplet+") est :"+cout_prop+
-               ", alors qu'ils peuvent s'en tirer seuls pour seulement :"+cout+", donc ce groupe à l'intérêt à quitter le noyau"; 
+               ", alors qu'ils peuvent s'en tirer seuls pour seulement :"+cout+", donc ce sous groupe à l'intérêt à quitter le groupe";
            }
          }
       }
@@ -272,7 +289,7 @@ export class ParamInput1Component implements OnInit {
            if(cout_prop>cout){
                if(this.voyageurs[i].comment_test_noyau_quad==="")
                this.voyageurs[i].comment_test_noyau_quad  =this.voyageurs[i].comment_test_noyau_quad + "Triplet Test : La somme de couts proportionnels pour les voyageurs ("+quad+") est :"+cout_prop+
-               ", alors qu'ils peuvent s'en tirer seuls pour seulement :"+cout+", donc ce groupe à l'intérêt à quitter le noyau"; 
+               ", alors qu'ils peuvent s'en tirer seuls pour seulement :"+cout+", donc ce sous groupe à l'intérêt à quitter le groupe";
            }
          }
          console.log(this.voyageurs[i].comment_test_noyau_quad);

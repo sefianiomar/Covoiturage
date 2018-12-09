@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = "Partage Equitable du cout d'un trajet entre deux villes";
+  title = "Partage equitable du coût de covoiturage entre Voyageurs";
 }
