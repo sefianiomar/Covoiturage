@@ -7,7 +7,6 @@
     <input formControlName='nbv' [(ngModel)]="nb_voyageurs" type="number" class="form-control" aria-label="Username" aria-describedby="basic-addon1">
   </div>
     <span class="alert"  *ngIf="f.nbv.invalid">Le nombre de voyageurs doit etre entre 2 et 5</span>
-    <span class="alert" *ngIf="f.nbv.required">Ce champs est obligatoire </span>
   <br>
     <br>
 
@@ -17,7 +16,6 @@
     <span class="input-group-addon">Euro</span>
   </div>
     <span class="alert" *ngIf="f.ckm.invalid"> Le cout au kilomètre doit etre supérieure à 0 euro </span>
-    <span class="alert" *ngIf="f.ckm.required"> Ce champs est obligatoire </span>
   <br>    <br>
 
 
